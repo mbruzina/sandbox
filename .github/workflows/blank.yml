@@ -12,7 +12,7 @@ jobs:
       - name: print working dir
         run: pwd
       - name: dump stuff
-        run: ls -la
+        run: ls -la && cd .. && pwd && ls -la
       - name: Set Environment Variables
         uses: tw3lveparsecs/github-actions-setvars@v0.1
         with:
