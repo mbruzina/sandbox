@@ -9,8 +9,9 @@ jobs:
     name: Get Latest Version
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: cat version
-        run: cat version.txt
+        run: cat .github/workflows/version.txt
       - name: Find Version
         run: |
           LATEST_VERSION=$(git ls-remote --sort='version:refname' --tags https://github.com/mbruzina/sandbox 'v*' | tail -1 | sed  -e 's|.*tags/||')
