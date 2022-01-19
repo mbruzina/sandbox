@@ -9,6 +9,8 @@ jobs:
     name: Get Latest Version
     runs-on: ubuntu-latest
     steps:
+      - name: print working dir
+        run: pwd
       - name: Set Environment Variables
         uses: tw3lveparsecs/github-actions-setvars@v0.1
       - name: Find Version
