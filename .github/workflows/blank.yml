@@ -9,14 +9,8 @@ jobs:
     name: Get Latest Version
     runs-on: ubuntu-latest
     steps:
-      - name: print working dir
-        run: pwd
-      - name: dump stuff
-        run: ls -la && cd .. && pwd && ls -la
-      - name: Set Environment Variables
-        uses: tw3lveparsecs/github-actions-setvars@v0.1
-        with:
-          envFilePath: .github/variables/*
+      - name: cat version
+        run: cat version.txt
       - name: Find Version
         run: |
           LATEST_VERSION=$(git ls-remote --sort='version:refname' --tags https://github.com/mbruzina/sandbox 'v*' | tail -1 | sed  -e 's|.*tags/||')
