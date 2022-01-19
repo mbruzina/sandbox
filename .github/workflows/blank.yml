@@ -3,12 +3,22 @@ on:
   push:
     branches:
       - main
-  schedule:
-    - cron: '*/5 * * * *'
-
 jobs:
-  Check-for-stuff:
+  get-latest-version:
+    name: Get Latest Version
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      # Do your own internal business logic...
+      - name: Compute ressource
+        run: |
+          LATEST_VERSION=$(git ls-remote --sort='version:refname' --tags https://github.com/mbruzina/sandbox 'v*' | tail -1 | sed  -e 's|.*tags/||')
+          echo "Found latest version: $LATEST_VERSION"
+          echo "currently ${{ env.LATEST_VERSION }}
+          echo "Exporting it as ENV variable..."
+          echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
+      
+      - name: Export variable for next jobs
+        uses: UnlyEd/github-action-store-variable@v2.1.0 # See https://github.com/UnlyEd/github-action-store-variable
+        with:      
+          variables: |
+            LATEST_VERSION=${{ env.LATEST_VERSION }}
