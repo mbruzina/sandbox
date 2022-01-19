@@ -1,7 +1,7 @@
 name: Check for stuff every minute using something
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   Check-for-stuff:
