@@ -12,7 +12,12 @@ jobs:
       - uses: actions/checkout@v1
       - name: cat version
         run: cat .github/workflows/version.txt
+      - name: Set Environment Variables
+        uses: tw3lveparsecs/github-actions-setvars@v0.1
+        with:
+          envFilePath: ./.github/variables/vars.env        
       - name: Find Version
         run: |
           LATEST_VERSION=$(git ls-remote --sort='version:refname' --tags https://github.com/mbruzina/sandbox 'v*' | tail -1 | sed  -e 's|.*tags/||')
           echo "Found latest version $LATEST_VERSION"
+          echo "Found env ${{ env }}"
