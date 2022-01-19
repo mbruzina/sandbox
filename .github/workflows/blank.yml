@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: print working dir
         run: pwd
+      - name: dump stuff
+        run: ls -la
       - name: Set Environment Variables
         uses: tw3lveparsecs/github-actions-setvars@v0.1
       - name: Find Version
