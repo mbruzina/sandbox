@@ -3,24 +3,24 @@ on:
   push:
     branches:
       - main
+
 jobs:
   get-latest-version:
     name: Get Latest Version
     runs-on: ubuntu-latest
     steps:
+      - name: Set Environment Variables
+        uses: tw3lveparsecs/github-actions-setvars@v0.1
+        with:
+          envFilePath: ./.github/variables/vars.env    
+    
       # Do your own internal business logic...
-      - name: Compute ressource
+      - name: Compute resource
         run: |
           LATEST_VERSION=$(git ls-remote --sort='version:refname' --tags https://github.com/mbruzina/sandbox 'v*' | tail -1 | sed  -e 's|.*tags/||')
           echo "Found latest version: $LATEST_VERSION"
-          echo "currently ${{ env.LATEST_VERSION }}"
+          echo "currently ${{ env.STUFF }}"
           echo "Exporting it as ENV variable..."
           echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
-        
-        
-      - name: Export variable for next jobs
-        uses: UnlyEd/github-action-store-variable@v2.1.0 # See https://github.com/UnlyEd/github-action-store-variable
-        with:      
-          variables: |
-            LATEST_VERSION=${{ env.LATEST_VERSION }}
+	  echo "what is the env: ${{ env }}
             
