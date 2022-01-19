@@ -1,5 +1,8 @@
 name: Check for stuff every minute using something
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '*/5 * * * *'
 
