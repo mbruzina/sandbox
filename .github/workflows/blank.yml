@@ -16,9 +16,11 @@ jobs:
           echo "currently ${{ env.LATEST_VERSION }}
           echo "Exporting it as ENV variable..."
           echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
-      
+        
+        
       - name: Export variable for next jobs
         uses: UnlyEd/github-action-store-variable@v2.1.0 # See https://github.com/UnlyEd/github-action-store-variable
         with:      
           variables: |
             LATEST_VERSION=${{ env.LATEST_VERSION }}
+            
