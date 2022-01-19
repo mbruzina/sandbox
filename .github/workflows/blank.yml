@@ -17,10 +17,10 @@ jobs:
       # Do your own internal business logic...
       - name: Compute resource
         run: |
-          LATEST_VERSION=$(git ls-remote --sort='version:refname' --tags https://github.com/mbruzina/sandbox 'v*' | tail -1 | sed  -e 's|.*tags/||')
-          echo "Found latest version: $LATEST_VERSION"
+	  LATEST_VERSION=$(git ls-remote --sort='version:refname' --tags https://github.com/mbruzina/sandbox 'v*' | tail -1 | sed  -e 's|.*tags/||')
+          echo "Found latest version $LATEST_VERSION"
           echo "currently ${{ env.STUFF }}"
           echo "Exporting it as ENV variable..."
           echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
-	  echo "what is the env: ${{ env }}"
-            
+	  echo "what is the env ${{ env }}"	
+  
