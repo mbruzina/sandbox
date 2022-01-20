@@ -14,8 +14,18 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '8'
+
       - name: Download java agent
         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
     
       - name: Check agent version
         run: echo Version $(java -jar newrelic.jar -version)
+
+      - name: Download Introspector
+        run: curl -sO https://download.newrelic.com/install/java/introspector/latest/nri-introspector-java_amd64.deb
+      
+      - name: Install Introspector
+        run: apt-get install -y -qq ./nri-introspector-java_amd64.deb > /dev/null
+        
+      - name: Check Agent in Introspector
+        run: echo Version $(nri-lsi-java -agentVersion)
