@@ -28,4 +28,10 @@ jobs:
         run: sudo apt-get install -y -qq ./nri-introspector-java_amd64.deb > /dev/null
         
       - name: Check Agent in Introspector
-        run: echo Version $(nri-lsi-java -agentVersion)
+        uses: sergeysova/jq-action@v2
+        id: version
+        with:
+          cmd: 'jq .version $(nri-lsi-java -agentVersion)'
+          
+      - name: Print lsi java version
+        run: 'echo "version ${{ steps.version.outputs.value }}"'
