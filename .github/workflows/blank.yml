@@ -35,4 +35,4 @@ jobs:
           
       - name: Compare versions
         if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
-        uses: .github/workflows/downstream.yml@main
+        uses: ./.github/workflows/downstream.yml@main
