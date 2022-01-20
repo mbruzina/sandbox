@@ -1,1 +1,10 @@
+name: Check for stuff every minute using something
+on:
+  workflow_dispatch:
 
+jobs:
+  echo-something:
+    name: Get Latest Version
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "downstream workflow was called"
