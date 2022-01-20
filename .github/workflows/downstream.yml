@@ -1,6 +1,7 @@
-name: Check for stuff every minute using something
+name: downstream
 on:
   workflow_dispatch:
+    
 
 jobs:
   echo-something:
