@@ -22,7 +22,7 @@ jobs:
           PREVIOUS_VERSION=${{ env.STUFF }}
           echo "Found latest version $LATEST_VERSION"
           echo "Found previous version $PREVIOUS_VERSION"
-          if [[ $LATEST_VERSION -ne $PREVIOUS_VERSION ]]; then
+          if [ "$LATEST_VERSION" !=  "$PREVIOUS_VERSION" ]]; then
             echo "Versions do not match"
             echo "DERP=${LATEST_VERSION}" >> ../variables/vars.env
           fi
