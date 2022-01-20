@@ -19,5 +19,10 @@ jobs:
       - name: Find Version
         run: |
           LATEST_VERSION=$(git ls-remote --sort='version:refname' --tags https://github.com/mbruzina/sandbox 'v*' | tail -1 | sed  -e 's|.*tags/||')
+          PREVIOUS_VERSION=${{ env.STUFF }}
           echo "Found latest version $LATEST_VERSION"
-          echo "Found env ${{ env.STUFF }}"
+          echo "Found previous version $PREVIOUS_VERSION"
+          if [[ $LATEST_VERSION -ne $PREVIOUS_VERSION ]]; then
+            echo "Versions do not match"
+            echo "DERP=${LATEST_VERSION}" >> ../variables/vars.env
+          fi
