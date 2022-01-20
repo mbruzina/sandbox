@@ -29,4 +29,4 @@ jobs:
 
       - name: Print lsi java version
         run: |
-          echo Version in lsi $(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')"
+          echo Version in lsi $(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
