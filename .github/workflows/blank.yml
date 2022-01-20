@@ -34,5 +34,5 @@ jobs:
           echo ::set-output name=lsi_agent_version::$(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
           
       - name: Compare versions
-        if: steps.currentJavaVersion.outputs.java_agent_version != steps.lsiJavaVersion.outputs.lsi_agent_version
-        run: echo "java version mismatch, new lsi release workflow should be triggered"
+        if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
+        uses: .github/workflows/downstream.yml@main
