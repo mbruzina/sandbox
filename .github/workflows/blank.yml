@@ -25,13 +25,8 @@ jobs:
         run: curl -sO https://download.newrelic.com/install/java/introspector/latest/nri-introspector-java_amd64.deb
       
       - name: Install Introspector
-        run: sudo apt-get install -y -qq ./nri-introspector-java_amd64.deb > /dev/null
-        
-      - name: Check Agent in Introspector
-        uses: sergeysova/jq-action@v2
-        id: version
-        with:
-          cmd: 'jq .version $(nri-lsi-java -agentVersion)'
-          
+        run: sudo apt-get install -y -qq ./nri-introspector-java_amd64.deb > /dev/null        
+
       - name: Print lsi java version
-        run: 'echo "version ${{ steps.version.outputs.value }}"'
+        run: |
+          echo Version in lsi $(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')"
