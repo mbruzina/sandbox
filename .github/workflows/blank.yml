@@ -18,9 +18,10 @@ jobs:
       - name: Download java agent
         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
     
-      - name: Check agent version
-        run: echo Version $(java -jar newrelic.jar -version)
-
+      - name: Get current java agent version
+        id: currentJavaVersion
+        run: echo ::set-output name=java_agent_version::$(java -jar newrelic.jar -version)
+      
       - name: Download Introspector
         run: curl -sO https://download.newrelic.com/install/java/introspector/latest/nri-introspector-java_amd64.deb
       
@@ -28,5 +29,10 @@ jobs:
         run: sudo apt-get install -y -qq ./nri-introspector-java_amd64.deb > /dev/null        
 
       - name: Print lsi java version
+        id: lsiJavaVersion
         run: |
-          echo Version in lsi $(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
+          echo ::set-output name=lsi_agent_version::$(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
+          
+      - name: Compare versions
+        if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
+        run: echo "Versions match"
