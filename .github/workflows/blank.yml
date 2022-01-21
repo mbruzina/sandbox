@@ -24,8 +24,8 @@ jobs:
         id: currentJavaVersion
         
         run: |
-          export VERSION=$(java -jar newrelic.jar -version)
-          echo ::set-output name=java_agent_version::$VERSION
+          export java_agent_version=$(java -jar newrelic.jar -version)
+          echo ::set-output name=java_agent_version::$java_agent_version
       
       - name: Download latest Introspector
         run: curl -sO https://download.newrelic.com/install/java/introspector/latest/nri-introspector-java_amd64.deb
@@ -40,7 +40,7 @@ jobs:
           
       - name: Java agent already up-to-date
         if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
-        run: echo Introspector already using latest java agent $VERSION
+        run: echo Introspector already using latest java agent $java_agent_version
         
       - name: Trigger new introspector build
         if: steps.currentJavaVersion.outputs.java_agent_version != steps.lsiJavaVersion.outputs.lsi_agent_version
