@@ -1,10 +1,7 @@
 name: Check for latest java agent
 on:
- push:
-    branches:
-      - main
-#   schedule:
-#   - cron: '*/5 * * * *'
+  schedule:
+  - cron: '0 0 * * *'
 
 jobs:
   update-introspector-to-latest-java-agent:
@@ -14,7 +11,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v2
         with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
+          distribution: 'temurin' 
           java-version: '8'
 
       - name: Download current java agent
@@ -22,7 +19,10 @@ jobs:
     
       - name: Read current java agent version
         id: currentJavaVersion
-        run: echo ::set-output name=java_agent_version::$(java -jar newrelic.jar -version)
+        
+        run: |
+          export VERSION=$(java -jar newrelic.jar -version)
+          echo ::set-output name=java_agent_version::$VERSION
       
       - name: Download latest Introspector
         run: curl -sO https://download.newrelic.com/install/java/introspector/latest/nri-introspector-java_amd64.deb
@@ -35,12 +35,12 @@ jobs:
         run: |
           echo ::set-output name=lsi_agent_version::$(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
           
-      - name: Java agent up-to-date
+      - name: Java agent already up-to-date
         env:
           VERSION: steps.currentJavaVersion.outputs.java_agent_version
         if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
-        run: echo "Introspector already using latest java agent " $(java -jar newrelic.jar -version) 
+        run: echo "Introspector already using latest java agent ${VERSION}"
         
-      - name: Trigger introspector build
+      - name: Trigger new introspector build
         if: steps.currentJavaVersion.outputs.java_agent_version != steps.lsiJavaVersion.outputs.lsi_agent_version
-        uses: ./.github/workflows/downstream.yml@main
+        uses: ./.github/workflows/build_publish_rpm.yml@main
