@@ -1,4 +1,4 @@
-name: Check for stuff every minute using something
+name: Check for latest java agent
 on:
  push:
     branches:
@@ -35,12 +35,12 @@ jobs:
         run: |
           echo ::set-output name=lsi_agent_version::$(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
           
-      - name: Update java agent in introspector
+      - name: Java agent up-to-date
         env:
           VERSION: steps.currentJavaVersion.outputs.java_agent_version
         if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
-        run: echo "Introspector already using latest java agent ${VERSION}"
+        run: echo "Introspector already using latest java agent" steps.currentJavaVersion.outputs.java_agent_version
         
-      - name: Update java agent in introspector        
+      - name: Trigger introspector build
         if: steps.currentJavaVersion.outputs.java_agent_version != steps.lsiJavaVersion.outputs.lsi_agent_version
         uses: ./.github/workflows/downstream.yml@main
