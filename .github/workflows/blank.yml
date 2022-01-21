@@ -22,7 +22,7 @@ jobs:
     
       - name: Read current java agent version
         id: currentJavaVersion
-        run: ::set-output name=java_agent_version::$(java -jar newrelic.jar -version)
+        run: echo ::set-output name=java_agent_version::$(java -jar newrelic.jar -version)
       
       - name: Download latest Introspector
         run: curl -sO https://download.newrelic.com/install/java/introspector/latest/nri-introspector-java_amd64.deb
@@ -33,7 +33,7 @@ jobs:
       - name: Read java agent version bundled with introspector
         id: lsiJavaVersion
         run: |
-          ::set-output name=lsi_agent_version::$(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
+          echo ::set-output name=lsi_agent_version::$(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
           
       - name: Java agent up-to-date
         env:
