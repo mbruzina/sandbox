@@ -39,8 +39,6 @@ jobs:
           echo ::set-output name=lsi_agent_version::$(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
           
       - name: Java agent already up-to-date
-        env:
-          VERSION: steps.currentJavaVersion.outputs.java_agent_version
         if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
         run: echo "Introspector already using latest java agent ${VERSION}"
         
