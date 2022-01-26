@@ -11,8 +11,7 @@ jobs:
     name: Update java agent in introspector
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-          
+      - uses: actions/checkout@v1          
       - uses: actions/setup-java@v2
         with:
           distribution: 'temurin' 
@@ -26,33 +25,33 @@ jobs:
           ls -la
           echo repo? ${{ github.repository }}
 
-
-      - name: Download current java agent
-        run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
-
-      - name: Read current java agent version
-        id: currentJavaVersion
-        run: echo ::set-output name=java_agent_version::$(java -jar newrelic.jar -version)
-      
-      - name: Download latest Introspector
-        run: curl -sO https://download.newrelic.com/install/java/introspector/latest/nri-introspector-java_amd64.deb
-      
-      - name: Install Introspector
-        run: sudo apt-get install -y -qq ./nri-introspector-java_amd64.deb > /dev/null        
-
-      - name: Read java agent version bundled with introspector
-        id: lsiJavaVersion
-        run: |
-          echo ::set-output name=lsi_agent_version::$(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
-          
-      - name: Java agent already up-to-date
-        if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
-        run: echo Introspector already using latest java agent ${{ steps.currentJavaVersion.outputs.java_agent_version }}
-        
       - name: Testing order of uses
         if: True
         uses: ./.github/workflows/downstream.yml@main
 
-      - name: Trigger new introspector build
-        if: steps.currentJavaVersion.outputs.java_agent_version != steps.lsiJavaVersion.outputs.lsi_agent_version
-        uses: ./.github/workflows/build_publish_rpm.yml@main
+
+#       - name: Download current java agent
+#         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
+
+#       - name: Read current java agent version
+#         id: currentJavaVersion
+#         run: echo ::set-output name=java_agent_version::$(java -jar newrelic.jar -version)
+      
+#       - name: Download latest Introspector
+#         run: curl -sO https://download.newrelic.com/install/java/introspector/latest/nri-introspector-java_amd64.deb
+      
+#       - name: Install Introspector
+#         run: sudo apt-get install -y -qq ./nri-introspector-java_amd64.deb > /dev/null        
+
+#       - name: Read java agent version bundled with introspector
+#         id: lsiJavaVersion
+#         run: |
+#           echo ::set-output name=lsi_agent_version::$(nri-lsi-java -agentVersion | grep -Po '"agentVersion":.*"' | awk -F': ' '{print $2}' | tr -d '"')
+          
+#       - name: Java agent already up-to-date
+#         if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
+#         run: echo Introspector already using latest java agent ${{ steps.currentJavaVersion.outputs.java_agent_version }}
+        
+#       - name: Trigger new introspector build
+#         if: steps.currentJavaVersion.outputs.java_agent_version != steps.lsiJavaVersion.outputs.lsi_agent_version
+#         uses: ./.github/workflows/build_publish_rpm.yml@main
