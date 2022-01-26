@@ -19,6 +19,11 @@ jobs:
           distribution: 'temurin' 
           java-version: '8'
 
+      - name: Running a sanity check
+        run: |
+          pwd
+          ls -la
+
       - name: Testing order of uses
         with:
           some: var
