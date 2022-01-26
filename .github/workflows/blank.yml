@@ -11,9 +11,7 @@ jobs:
     name: Update java agent in introspector
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with: 
-          path: ${{ github.repository }}
+      - uses: actions/checkout@v1
       - uses: actions/setup-java@v2
         with:
           distribution: 'temurin' 
@@ -34,7 +32,8 @@ jobs:
       - name: Testing order of uses
         with:
           some: var
-        uses: ${{ github.repository }}/.github/workflows/downstream.yml@main
+          path: ${{ github.repository }}
+        uses: ./.github/workflows/downstream.yml@main
 
       - name: Download current java agent
         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
