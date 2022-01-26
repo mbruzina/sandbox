@@ -19,7 +19,12 @@ jobs:
 
       - name: Download current java agent
         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
-    
+
+      - name: Testing order of uses
+        with:        
+          derp: something
+        uses: ./.github/workflows/downstream.yml@main
+
       - name: Read current java agent version
         id: currentJavaVersion
         run: echo ::set-output name=java_agent_version::$(java -jar newrelic.jar -version)
@@ -39,10 +44,6 @@ jobs:
         if: steps.currentJavaVersion.outputs.java_agent_version == steps.lsiJavaVersion.outputs.lsi_agent_version
         run: echo Introspector already using latest java agent ${{ steps.currentJavaVersion.outputs.java_agent_version }}
         
-      - name: Testing order of uses
-        uses: ./.github/workflows/downstream.yml@main
-        with:        
-          derp: something
         
       - name: Trigger new introspector build
         if: steps.currentJavaVersion.outputs.java_agent_version != steps.lsiJavaVersion.outputs.lsi_agent_version
