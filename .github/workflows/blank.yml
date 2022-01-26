@@ -17,13 +17,13 @@ jobs:
           distribution: 'temurin' 
           java-version: '8'
 
-      - name: Download current java agent
-        run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
-
       - name: Testing order of uses
         with:
           some: var
-        uses: ./.github/workflows/downstream.yml
+        uses: ./.github/workflows/downstream.yml@main
+
+      - name: Download current java agent
+        run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
 
       - name: Read current java agent version
         id: currentJavaVersion
