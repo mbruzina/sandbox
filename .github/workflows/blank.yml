@@ -21,7 +21,9 @@ jobs:
       - name: Running a sanity check
         run: |
           pwd
-          ls -la          
+          ls -la
+          cd .github
+          ls -la
           echo repo? ${{ github.repository }}
 
       - name: Testing order of uses
