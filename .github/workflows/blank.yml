@@ -29,8 +29,7 @@ jobs:
           echo repo? ${{ github.repository }}
 
       - name: Testing order of uses
-        if: True
-        uses: ./.github/workflows/downstream.yml
+        uses: ./.github/workflows/downstream.yml@nothere
 
 
 #       - name: Download current java agent
