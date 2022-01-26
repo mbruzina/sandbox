@@ -26,6 +26,9 @@ jobs:
           cd mbruzina
           pwd 
           ls -la
+          cd sandbox
+          pwd
+          ls -la
 
       - name: Testing order of uses
         with:
