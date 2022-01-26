@@ -25,7 +25,7 @@ jobs:
           echo repo? ${{ github.repository }}
 
       - name: Testing order of uses
-        uses: ./.github.workflows/downstream.yml@main
+        uses: ./.github/workflows/downstream.yml@main
 
       - name: Download current java agent
         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
