@@ -23,7 +23,7 @@ jobs:
       - name: Testing order of uses
         with:
           some: var
-        uses: ./.github/workflows/downstream.yml@main
+        uses: ./.github/workflows/downstream.yml
 
       - name: Read current java agent version
         id: currentJavaVersion
