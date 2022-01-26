@@ -20,13 +20,7 @@ jobs:
       - name: Running a sanity check
         run: |
           pwd
-          ls -la
-          cd mbruzina
-          pwd 
-          ls -la
-          cd sandbox
-          pwd
-          ls -la
+          ls -la          
           echo repo? ${{ github.repository }}
 
       - name: Testing order of uses
