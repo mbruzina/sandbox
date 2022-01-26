@@ -12,10 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          repository: mbruzina/sandbox
-          ref: main
-          path: ./.github/workflows
           
       - uses: actions/setup-java@v2
         with:
@@ -29,9 +25,7 @@ jobs:
           echo repo? ${{ github.repository }}
 
       - name: Testing order of uses
-        with:
-          some: var
-        uses: /downstream.yml@main
+        uses: ./.github.workflows/downstream.yml@main
 
       - name: Download current java agent
         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
