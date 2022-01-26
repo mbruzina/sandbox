@@ -11,7 +11,12 @@ jobs:
     name: Update java agent in introspector
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          repository: mbruzina/sandbox
+          ref: main
+          path: ./.github/workflows
+          
       - uses: actions/setup-java@v2
         with:
           distribution: 'temurin' 
@@ -26,7 +31,7 @@ jobs:
       - name: Testing order of uses
         with:
           some: var
-        uses: mbruzina/sandbox/.github/workflows/downstream.yml@main
+        uses: downstream.yml@main
 
       - name: Download current java agent
         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
