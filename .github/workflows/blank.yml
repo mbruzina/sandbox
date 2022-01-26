@@ -21,8 +21,8 @@ jobs:
         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
 
       - name: Testing order of uses
-        with:        
-          derp: something
+        with:
+          some: var
         uses: ./.github/workflows/downstream.yml@main
 
       - name: Read current java agent version
