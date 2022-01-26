@@ -29,6 +29,7 @@ jobs:
           cd sandbox
           pwd
           ls -la
+          echo repo? ${{ github.repository }}
 
       - name: Testing order of uses
         with:
