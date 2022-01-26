@@ -23,6 +23,9 @@ jobs:
         run: |
           pwd
           ls -la
+          cd mbruzina
+          pwd 
+          ls -la
 
       - name: Testing order of uses
         with:
