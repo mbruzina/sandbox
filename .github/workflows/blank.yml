@@ -26,7 +26,7 @@ jobs:
       - name: Testing order of uses
         with:
           some: var
-        uses: ${{ github.repository }}/.github/workflows/downstream.yml@main
+        uses: mbruzina/sandbox/.github/workflows/downstream.yml@main
 
       - name: Download current java agent
         run: curl -sO http://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar
