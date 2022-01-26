@@ -27,6 +27,7 @@ jobs:
           echo at this location $(pwd)
           ls -la
           echo repo? ${{ github.repository }}
+          cat blank.yml
 
       - name: Testing order of uses
         uses: ./.github/workflows/downstream.yml@nothere
