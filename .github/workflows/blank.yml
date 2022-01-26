@@ -24,7 +24,7 @@ jobs:
           cd .github
           ls -la
           cd workflows
-          echo we're here $(pwd)
+          echo at this location $(pwd)
           ls -la
           echo repo? ${{ github.repository }}
 
