@@ -23,6 +23,8 @@ jobs:
           ls -la
           cd .github
           ls -la
+          cd workflows
+          ls -la
           echo repo? ${{ github.repository }}
 
       - name: Testing order of uses
