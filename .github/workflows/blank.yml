@@ -29,7 +29,7 @@ jobs:
 
       - name: Testing order of uses
         if: True
-        uses: ./.github/workflows/downstream.yml@main
+        uses: ./.github/workflows/downstream.yml
 
 
 #       - name: Download current java agent
