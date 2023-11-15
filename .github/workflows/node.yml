@@ -16,4 +16,4 @@ jobs:
 #      - name: Install dependencies
 #        run: npm install
       - name: Run application
-        run: node ${{ github.workspace }}/.github/workflows/scripts/main.js
+        run: node ${{ github.workspace }}/.github/scripts/main.js
