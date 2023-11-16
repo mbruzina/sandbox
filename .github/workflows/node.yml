@@ -40,7 +40,7 @@ jobs:
     name: Get Test Definition Files
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.find-definition-files.outputs.JSON_ARRAY }}
+      matrix: ${{ fromJson(steps.find-definition-files.outputs.JSON_ARRAY) }}
     steps:
       - name: Use Node.js
         uses: actions/setup-node@v1
@@ -69,7 +69,7 @@ jobs:
     if: ${{ fromJSON(needs.get-test-definition-files.outputs.matrix).include[0] }} # Avoids empty matrix validation error
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJSON(needs.get-test-definition-files.outputs.matrix) }}
+      matrix: ${{ needs.get-test-definition-files.outputs.matrix }}
       fail-fast: false
     env:
       MATRIX: ${{ toJSON(matrix) }}
