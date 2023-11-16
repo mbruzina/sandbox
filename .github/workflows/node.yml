@@ -40,19 +40,17 @@ jobs:
     name: Get Test Definition Files
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.find-definition-files.outputs.result }}
+      matrix: ${{ steps.find-definition-files.outputs.files }}
     steps:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: '18.x'
-
       - name: Checkout open-install-library Repo
         uses: actions/checkout@v2
         with:
           repository: newrelic/open-install-library
           path: ${{ github.workspace }}/oil
-
       - name: Checkout sandbox repo
         uses: actions/checkout@v2
         with:
@@ -61,9 +59,7 @@ jobs:
       - name: Get Test Definition Files
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
-        uses: actions/github-script@v3
-        with:
-          script: node findTestDefinitionFiles.js
+        run:  echo "files=$(node findTestDefinitionFiles.js)" >> $GITHUB_OUTPUT
 
   test-deploy-recipe:
     name: ${{ matrix.testDisplayName }}
