@@ -7,20 +7,20 @@ on:
       - main
 
 jobs:
-#  checkout-repository:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#
-#      - name: Use Node.js
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: '18.x'
+  #  checkout-repository:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: Checkout
+  #        uses: actions/checkout@v2
+  #
+  #      - name: Use Node.js
+  #        uses: actions/setup-node@v1
+  #        with:
+  #          node-version: '18.x'
 
   get-test-definition-files:
     name: Get Test Definition Files
-#    needs: [ checkout-repository ]
+    #    needs: [ checkout-repository ]
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.get-test-definition-files.outputs.result }}
@@ -88,17 +88,31 @@ jobs:
       #            return output;
       #
 
-      - name: Install dependencies
-        working-directory: ${{ github.workspace }}/.github/scripts
-        run: npm install
 
-      - name: Run application
-        working-directory: ${{ github.workspace }}/.github/scripts
-        run: node main.js
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SQS_URL: ${{ secrets.SQS_URL }}
-          DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
+    test-deploy-recipe:
+      name: ${{ matrix.testDisplayName }}
+      needs: [ get-test-definition-files ]
+      if: ${{ fromJSON(needs.get-test-definition-files.outputs.matrix).include[0] }} # Avoids empty matrix validation error
+      runs-on: ubuntu-latest
+      strategy:
+        matrix: ${{ fromJSON(needs.get-test-definition-files.outputs.matrix) }}
+        fail-fast: false
+      env:
+        MATRIX: ${{ toJSON(matrix) }}
+
+      steps:
+        - name: Install dependencies for test scripts
+          working-directory: ${{ github.workspace }}/derp/.github/scripts
+          run: npm install
+
+        - name: Run test scripts
+          working-directory: ${{ github.workspace }}/derp/.github/scripts
+          run: node main.js
+          env:
+            TEST_DEFINITION_URL: https://raw.githubusercontent.com/newrelic/open-install-library/main/test/definitions/${{ matrix.testDefinitionFile }}
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION: ${{ secrets.AWS_REGION }}
+            SQS_URL: ${{ secrets.SQS_URL }}
+            DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
 

@@ -70,8 +70,7 @@ function sleep(ms) {
 
 function main() {
 
-    const url =
-        'https://raw.githubusercontent.com/newrelic/open-install-library/main/test/definitions/infra-agent/ubuntu22-infra.json'
+    const url = process.env.TEST_DEFINITION_URL
     // const url = 'https://raw.githubusercontent.com/newrelic/open-install-library/main/test/manual/definitions/infra-agent/ubuntu20-infra.json'
 
     // Fetch deployment config, will be from //raw.githubusercontent.com/newrelic/open-install-library for OIL tests
