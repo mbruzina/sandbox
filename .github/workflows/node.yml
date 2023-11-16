@@ -40,7 +40,7 @@ jobs:
     name: Get Test Definition Files
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.find-definition-files.outputs.JSON_ARRAY }}
+      matrix: ${{ steps.find-definition-files.outputs.result }}
     steps:
       - name: Use Node.js
         uses: actions/setup-node@v1
@@ -61,12 +61,7 @@ jobs:
       - name: Get Test Definition Files
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: |
-          echo --running script--
-          node findTestDefinitionFiles.js
-          echo --end script--
-          echo "JSON_ARRAY=$(node findTestDefinitionFiles.js)" >> $GITHUB_OUTPUT
-          echo gh-output $GITHUB_OUTPUT
+        run:  node findTestDefinitionFiles.js
 
   test-deploy-recipe:
     name: ${{ matrix.testDisplayName }}
@@ -74,7 +69,7 @@ jobs:
     if: ${{ fromJSON(needs.get-test-definition-files.outputs.matrix).include[0] }} # Avoids empty matrix validation error
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ needs.get-test-definition-files.outputs.matrix }}
+      matrix: ${{ fromJson(needs.get-test-definition-files.outputs.matrix) }}
       fail-fast: false
     env:
       MATRIX: ${{ toJSON(matrix) }}
