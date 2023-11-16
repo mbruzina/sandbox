@@ -6,7 +6,7 @@ const { unmarshall } = require('@aws-sdk/util-dynamodb')
 
 const AWS_REGION = process.env.AWS_REGION
 const SQS_URL = process.env.SQS_URL
-const DYANMODB_TABLE = process.env.DYANMODB_TABLE
+const DYNAMO_TABLE = process.env.DYNAMO_TABLE
 
 const sqs = new SQSClient({ region: AWS_REGION, credentials: defaultProvider })
 const dynamodb = new DynamoDBClient({ region: AWS_REGION, credentials: defaultProvider })
@@ -14,7 +14,7 @@ const dynamodb = new DynamoDBClient({ region: AWS_REGION, credentials: defaultPr
 
 function queryForDeployment(messageId) {
     const query_params = {
-        TableName: DYANMODB_TABLE,
+        TableName: DYNAMO_TABLE,
         KeyConditionExpression: 'id = :id',
         FilterExpression: 'completed = :completed',
         ExpressionAttributeNames: {
