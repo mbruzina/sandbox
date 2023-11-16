@@ -30,10 +30,10 @@ async function main() {
             };
         });
 
-    const output = {
-        include: outputTestFilesMap,
-    };
-    console.log(output);
+    // const output = {
+    //     include: outputTestFilesMap,
+    // };
+    console.log(outputTestFilesMap);
     return output;
 }
 
