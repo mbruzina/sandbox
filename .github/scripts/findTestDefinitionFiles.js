@@ -20,6 +20,7 @@ async function getFiles(dir) {
 async function main() {
     // const definitionsDir = "${{ github.workspace }}/oil/test/definitions";
     const definitionsDir = "/home/runner/work/sandbox/sandbox/oil/test/definitions/infra-agent";
+    const abbrevDir = "/test/definitions/infra-agent"
     const testDefinitions = await getFiles(definitionsDir);
 
     const outputTestFilesMap = testDefinitions
@@ -27,6 +28,7 @@ async function main() {
             return {
                 testDefinitionFile,
                 testDisplayName: testDefinitionFile.replace(`${definitionsDir}/`, ""),
+                testDefinitionSuffix: testDefinitionFile.replace(`${definitionsDir}/`, `${abbrevDir}/`)
             };
         });
 
