@@ -15,9 +15,7 @@ jobs:
           node-version: '18.x'
       - name: Install dependencies
         working-directory: ${{ github.workspace }}.github/scripts
-        run: npm install aws-sdk
+        run: npm install
       - name: Run application
-        run:
-          working-directory: ${{ github.workspace }}.github/scripts
-          using: 'node18'
-          main: main.js
+        working-directory: ${{ github.workspace }}.github/scripts
+        run: node main.js
