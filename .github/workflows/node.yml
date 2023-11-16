@@ -36,26 +36,28 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
 
+  clone-repos:
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '18.x'
+    - name: Checkout open-install-library Repo
+      uses: actions/checkout@v2
+      with:
+        repository: newrelic/open-install-library
+        path: ${{ github.workspace }}/oil
+    - name: Checkout sandbox repo
+      uses: actions/checkout@v2
+      with:
+        path: derp
+
   get-test-definition-files:
     name: Get Test Definition Files
+    needs: [ clone-repos ]
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.find-definition-files.outputs.files }}
     steps:
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '18.x'
-      - name: Checkout open-install-library Repo
-        uses: actions/checkout@v2
-        with:
-          repository: newrelic/open-install-library
-          path: ${{ github.workspace }}/oil
-      - name: Checkout sandbox repo
-        uses: actions/checkout@v2
-        with:
-          path: derp
-
       - name: Get Test Definition Files
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
