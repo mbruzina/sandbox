@@ -61,6 +61,19 @@ jobs:
     outputs:
       matrix: ${{ steps.find-definition-files.outputs.files }}
     steps:
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+      - name: Checkout open-install-library Repo
+        uses: actions/checkout@v2
+        with:
+          repository: newrelic/open-install-library
+          path: ${{ github.workspace }}/oil
+      - name: Checkout sandbox repo
+        uses: actions/checkout@v2
+        with:
+          path: derp
       - name: Get Test Definition Files
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
@@ -77,10 +90,22 @@ jobs:
     env:
       MATRIX: ${{ toJSON(matrix) }}
     steps:
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+      - name: Checkout open-install-library Repo
+        uses: actions/checkout@v2
+        with:
+          repository: newrelic/open-install-library
+          path: ${{ github.workspace }}/oil
+      - name: Checkout sandbox repo
+        uses: actions/checkout@v2
+        with:
+          path: derp
       - name: Install dependencies for test scripts
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: npm install
-
       - name: Run test scripts
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: node main.js
