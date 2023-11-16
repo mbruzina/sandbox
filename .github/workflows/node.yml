@@ -46,6 +46,7 @@ jobs:
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: |
           ls -la ${{ github.workspace }}/oil
+          ls -la ${{ github.workspace }}/derp
           echo $(pwd)
           node findTestDefinitionFiles.js
 
