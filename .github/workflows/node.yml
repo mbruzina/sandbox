@@ -22,3 +22,8 @@ jobs:
       - name: Run application
         working-directory: ${{ github.workspace }}/.github/scripts
         run: node main.js
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SQS_URL: ${{ secrets.SQS_QUEUE_URL }}
+          DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
+

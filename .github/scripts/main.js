@@ -4,15 +4,17 @@ const { defaultProvider } = require('@aws-sdk/client-sqs')
 const { DynamoDBClient, QueryCommand } = require('@aws-sdk/client-dynamodb')
 const { unmarshall } = require('@aws-sdk/util-dynamodb')
 
-const sqs = new SQSClient({ region: 'us-east-2', credentials: defaultProvider })
-const dynamodb = new DynamoDBClient({ region: 'us-east-2', credentials: defaultProvider })
+const AWS_REGION = process.env.AWS_REGION
+const SQS_URL = process.env.SQS_URL
+const DYANMODB_TABLE = process.env.DYANMODB_TABLE
 
-const queueUrl = 'https://sqs.us-east-2.amazonaws.com/709144918866/deployer-configs-outputz'
-const tableName = 'deployer-status-outputz'
+const sqs = new SQSClient({ region: AWS_REGION, credentials: defaultProvider })
+const dynamodb = new DynamoDBClient({ region: AWS_REGION, credentials: defaultProvider })
+
 
 function queryForDeployment(messageId) {
     const query_params = {
-        TableName: tableName,
+        TableName: DYANMODB_TABLE,
         KeyConditionExpression: 'id = :id',
         FilterExpression: 'completed = :completed',
         ExpressionAttributeNames: {
@@ -79,7 +81,7 @@ function main() {
             let messageId
             try {
                 const command = new SendMessageCommand({
-                    QueueUrl: queueUrl,
+                    QueueUrl: SQS_URL,
                     MessageBody: body,
                 })
                 data = await sqs.send(command)
