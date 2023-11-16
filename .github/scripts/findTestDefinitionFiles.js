@@ -30,12 +30,11 @@ async function main() {
             };
         });
 
-    // const output = {
-    //     include: outputTestFilesMap,
-    // };
-    // console.log(output);
+    const output = {
+        include: outputTestFilesMap,
+    };
+    console.log(JSON.stringify(output));
     // return output;
-    console.log(JSON.stringify(outputTestFilesMap));
 }
 
 
