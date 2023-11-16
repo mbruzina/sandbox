@@ -29,8 +29,8 @@ jobs:
       - name: Checkout open-install-library Repo
         uses: actions/checkout@v2
         with:
-          name: https://www.github.com/newrelic/open-install-library.git
-          fetch-depth: 0
+          repository: newrelic/open-install-library
+          path: ${{ github.workspace }}
 
       - name: Get Test Definition Files
         id: get-test-definition-files

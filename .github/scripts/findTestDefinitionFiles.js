@@ -18,7 +18,7 @@ async function getFiles(dir) {
 
 
 async function main() {
-    const definitionsDir = "${{ github.workspace }}/newrelic/open-install-library/test/definitions";
+    const definitionsDir = "${{ github.workspace }}/open-install-library/test/definitions";
     const testDefinitions = await getFiles(definitionsDir);
 
     const outputTestFilesMap = testDefinitions
