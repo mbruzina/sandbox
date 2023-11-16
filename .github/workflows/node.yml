@@ -45,8 +45,6 @@ jobs:
         id: get-test-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: |
-#          ls -la ${{ github.workspace }}/oil
-#          ls -la ${{ github.workspace }}/derp
           echo $(pwd)
           node findTestDefinitionFiles.js
 
@@ -90,7 +88,7 @@ jobs:
       #
 
       - name: Install dependencies
-        working-directory: ${{ github.workspace }}/derp/.github/scripts
+        working-directory: ${{ github.workspace }}/.github/scripts
         run: npm install
 
       - name: Run application
