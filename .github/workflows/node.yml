@@ -62,6 +62,9 @@ jobs:
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: |
+          echo --running script--
+          node findTestDefinitionFiles.js
+          echo --end script--
           echo "JSON_ARRAY=$(node findTestDefinitionFiles.js)" >> $GITHUB_OUTPUT
           echo gh-output $GITHUB_OUTPUT
 
