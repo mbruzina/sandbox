@@ -61,7 +61,9 @@ jobs:
       - name: Get Test Definition Files
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run:  node findTestDefinitionFiles.js
+        uses: actions/github-script@v3
+        with:
+          script: node findTestDefinitionFiles.js
 
   test-deploy-recipe:
     name: ${{ matrix.testDisplayName }}
