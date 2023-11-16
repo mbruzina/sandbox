@@ -17,7 +17,7 @@ jobs:
 
   get-test-definition-files:
     name: Get Test Definition Files
-    depends-on: checkout-repository
+    needs: [checkout-repository]
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.get-test-definition-files.outputs.result }}
