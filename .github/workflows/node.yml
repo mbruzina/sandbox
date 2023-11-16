@@ -34,14 +34,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: newrelic/open-install-library
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/derp
 
       - name: Get Test Definition Files
         id: get-test-definition-files
-#        working-directory: ${{ github.workspace }}/.github/scripts
+        working-directory: ${{ github.workspace }}/derp
         run: |
           echo $(pwd)
-#          node findTestDefinitionFiles.js
+          node findTestDefinitionFiles.js
 
       #        with:
       #          script: |
