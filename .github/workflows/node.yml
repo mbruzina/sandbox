@@ -7,20 +7,20 @@ on:
       - main
 
 jobs:
-  checkout-repository:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '18.x'
+#  checkout-repository:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Use Node.js
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: '18.x'
 
   get-test-definition-files:
     name: Get Test Definition Files
-    needs: [ checkout-repository ]
+#    needs: [ checkout-repository ]
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.get-test-definition-files.outputs.result }}
@@ -34,11 +34,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: newrelic/open-install-library
-          path: ${{ github.workspace }}/derp
+          path: ${{ github.workspace }}/oil
+
+      - name: Checkout sandbox repo
+        uses: actions/checkout@v2
 
       - name: Get Test Definition Files
         id: get-test-definition-files
-        working-directory: ${{ github.workspace }}/derp
+        working-directory: ${{ github.workspace }}/.github/scripts
         run: |
           echo $(pwd)
           node findTestDefinitionFiles.js
