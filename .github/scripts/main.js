@@ -53,9 +53,13 @@ async function isDeploymentSuccessful(deploymentId, dynamodb, retries, waitSecon
             for (let i = 0; i < response.Items.length; i++) {
                 const item = unmarshall(response.Items[i])
                 console.log(`Item ${i + 1}: ${item.id} - ${item.completed} - ${item.status}`)
-                if (item.completed && item.status === 'FAILED') {
-                    console.error(`Deployment failed: ${item.message}`)
-                    return false
+                if (item.completed) {
+                    if(item.status === 'FAILED') {
+                        console.error(`Deployment failed: ${item.message}`)
+                        return false
+                    }
+
+                    return true
                 }
             }
         } catch (err) {
