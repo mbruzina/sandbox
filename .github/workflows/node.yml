@@ -45,7 +45,7 @@ jobs:
         id: get-test-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: |
-          ls -la ${{ github.workspace }}
+          ls -la ${{ github.workspace }}/oil
           echo $(pwd)
           node findTestDefinitionFiles.js
 
