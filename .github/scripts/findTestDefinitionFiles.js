@@ -18,7 +18,8 @@ async function getFiles(dir) {
 
 
 async function main() {
-    const definitionsDir = "${{ github.workspace }}/oil/test/definitions";
+    // const definitionsDir = "${{ github.workspace }}/oil/test/definitions";
+    const definitionsDir = "/home/runner/work/sandbox/sandbox/oil/test/definitions";
     const testDefinitions = await getFiles(definitionsDir);
 
     const outputTestFilesMap = testDefinitions
