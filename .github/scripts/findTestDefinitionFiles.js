@@ -35,7 +35,7 @@ async function main() {
     // };
     // console.log(output);
     // return output;
-    console.log(outputTestFilesMap);
+    console.log(JSON.stringify(outputTestFilesMap));
 }
 
 
