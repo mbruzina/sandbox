@@ -34,12 +34,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: newrelic/open-install-library
-          path: oil
+          path: ${{ github.workspace }}/oil
 
       - name: Checkout sandbox repo
         uses: actions/checkout@v2
         with:
-          path: derp
+          path: ${{ github.workspace }}/derp
 
       - name: Get Test Definition Files
         id: get-test-definition-files
