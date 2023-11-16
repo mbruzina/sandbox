@@ -1,4 +1,5 @@
 const https = require('https')
+const core = require('@actions/core')
 const { SQSClient, SendMessageCommand } = require('@aws-sdk/client-sqs')
 const { DynamoDBClient, QueryCommand } = require('@aws-sdk/client-dynamodb')
 const { unmarshall } = require('@aws-sdk/util-dynamodb')
@@ -51,15 +52,17 @@ async function isDeploymentSuccessful(deploymentId, dynamodb, retries, waitSecon
             for (let i = 0; i < response.Items.length; i++) {
                 const item = unmarshall(response.Items[i])
                 console.log(`Item ${i + 1}: ${item.id} - ${item.completed} - ${item.status}`)
-                if (item.completed) {
-                    return item.status !== 'FAILED'
+                if (item.completed && item.status === 'FAILED') {
+                    throw new Error(`Deployment failed => ${item.message}`)
+                } else {
+                    return true
                 }
             }
         } catch (err) {
             console.log(`Error querying table: ${err}`)
         }
     }
-    return false
+    throw new Error(`Deployment timed out after ${retries} retries.`)
 }
 
 function sleep(ms) {

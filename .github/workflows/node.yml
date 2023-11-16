@@ -40,8 +40,7 @@ jobs:
     name: Get Test Definition Files
     runs-on: ubuntu-latest
     outputs:
-      infra_agent_matrix: ${{ steps.find-definition-files.outputs.infra_agent_files }}
-      logging_matrix: ${{ steps.find-definition-files.outputs.logging_files }}
+      matrix: ${{ steps.find-definition-files.outputs.files }}
     steps:
       - name: Use Node.js
         uses: actions/setup-node@v1
@@ -59,17 +58,15 @@ jobs:
       - name: Get Test Definition Files
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: |
-          echo "infra_agent_files=$(node findTestDefinitionFiles.js /test/definitions/infra-agent)" >> $GITHUB_OUTPUT
-          echo "logging_files=$(node findTestDefinitionFiles.js /test/definitions/logging)" >> $GITHUB_OUTPUT
+        run: echo "files=$(node findTestDefinitionFiles.js)" >> $GITHUB_OUTPUT
 
-  test-infra-recipes:
+  test-deploy-recipe:
     name: ${{ matrix.testDisplayName }}
     needs: [ get-test-definition-files ]
-    if: ${{ fromJSON(needs.get-test-definition-files.outputs.infra_agent_matrix).include[0] }} # Avoids empty matrix validation error
+    if: ${{ fromJSON(needs.get-test-definition-files.outputs.matrix).include[0] }} # Avoids empty matrix validation error
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.get-test-definition-files.outputs.infra_agent_matrix) }}
+      matrix: ${{ fromJson(needs.get-test-definition-files.outputs.matrix) }}
       fail-fast: false
     env:
       MATRIX: ${{ toJSON(matrix) }}
@@ -99,39 +96,3 @@ jobs:
           SQS_URL: ${{ secrets.SQS_URL }}
           DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
 
-
-  test-logging-recipes:
-    name: ${{ matrix.testDisplayName }}
-    needs: [ get-test-definition-files ]
-    if: ${{ fromJSON(needs.get-test-definition-files.outputs.logging_matrix).include[0] }} # Avoids empty matrix validation error
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJson(needs.get-test-definition-files.outputs.logging_matrix) }}
-      fail-fast: false
-    env:
-      MATRIX: ${{ toJSON(matrix) }}
-    steps:
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '18.x'
-
-      - name: Checkout sandbox repo
-        uses: actions/checkout@v2
-        with:
-          path: derp
-
-      - name: Install dependencies for test scripts
-        working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: npm install
-
-      - name: Run test scripts
-        working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: node main.js
-        env:
-          TEST_DEFINITION_URL: https://raw.githubusercontent.com/newrelic/open-install-library/main${{ matrix.testDefinitionSuffix }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SQS_URL: ${{ secrets.SQS_URL }}
-          DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
