@@ -35,7 +35,9 @@ jobs:
       - name: Get Test Definition Files
         id: get-test-definition-files
         working-directory: ${{ github.workspace }}/.github/scripts
-        run: node findTestDefinitionFiles.js
+        run: |
+          pwd
+          node findTestDefinitionFiles.js
 #        with:
 #          script: |
 #            const fs = require("fs");
