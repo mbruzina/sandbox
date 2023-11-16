@@ -9,7 +9,8 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "3.27.0",
     "@aws-sdk/client-dynamodb": "3.27.0",
-    "@aws-sdk/util-dynamodb": "3.27.0"
+    "@aws-sdk/util-dynamodb": "3.27.0",
+    "@aws-sdk/credential-providers": "3.451.0"
   },
   "keywords": [],
   "author": "",
