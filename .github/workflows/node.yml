@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  checkout-repository:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,6 +17,7 @@ jobs:
 
   get-test-definition-files:
     name: Get Test Definition Files
+    depends-on: checkout-repository
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.get-test-definition-files.outputs.result }}
@@ -36,7 +37,7 @@ jobs:
         id: get-test-definition-files
         working-directory: ${{ github.workspace }}/.github/scripts
         run: |
-          pwd
+          echo $(pwd)
           node findTestDefinitionFiles.js
 #        with:
 #          script: |
