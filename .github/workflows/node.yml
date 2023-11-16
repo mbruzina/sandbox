@@ -40,7 +40,7 @@ jobs:
     name: Get Test Definition Files
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ fromJson(steps.find-definition-files.outputs.JSON_ARRAY) }}
+      matrix: ${{ steps.find-definition-files.outputs.JSON_ARRAY }}
     steps:
       - name: Use Node.js
         uses: actions/setup-node@v1
