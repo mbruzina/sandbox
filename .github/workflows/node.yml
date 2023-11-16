@@ -15,6 +15,66 @@ jobs:
         with:
           node-version: '18.x'
 
+  get-test-definition-files:
+    name: Get Test Definition Files
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.get-test-definition-files.outputs.result }}
+    steps:
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+
+      - name: Checkout open-install-library Repo
+        uses: actions/checkout@v2
+        with:
+          name: clone https://www.github.com/newrelic/open-install-library.git
+          fetch-depth: 0
+
+      - name: Get Test Definition Files
+        id: get-test-definition-files
+        working-directory: ${{ github.workspace }}/.github/scripts
+        run: node findTestDefinitionFiles.js
+#        with:
+#          script: |
+#            const fs = require("fs");
+#            const fsp = fs.promises;
+#            const path = require("path");
+#
+#            const { isOHIValidationTimeout } = require("${{ github.workspace }}/.github/workflows/scripts/ohiValidationTimeout");
+#
+#            // readdir recursive directory search
+#            const { readdir } = fsp;
+#            async function getFiles(dir) {
+#              const dirents = await readdir(dir, { withFileTypes: true });
+#              const files = await Promise.all(
+#                dirents.map((dirent) => {
+#                  const res = path.join(dir, dirent.name);
+#                  return dirent.isDirectory() ? getFiles(res) : res;
+#                })
+#              );
+#              return Array.prototype.concat(...files);
+#            }
+#
+#            const definitionsDir = "test/definitions";
+#            const testDefinitions = await getFiles(definitionsDir);
+#
+#            const outputTestFilesMap = testDefinitions
+#              .filter((testDefinitionFile) => !isOHIValidationTimeout(testDefinitionFile))
+#              .map((testDefinitionFile) => {
+#                return {
+#                  testDefinitionFile,
+#                  testDisplayName: testDefinitionFile.replace(`${definitionsDir}/`, ""),
+#                };
+#              });
+#            const output = {
+#              include: outputTestFilesMap,
+#            };
+#            console.log(output);
+#            return output;
+#
+
       - name: Install dependencies
         working-directory: ${{ github.workspace }}/.github/scripts
         run: npm install
