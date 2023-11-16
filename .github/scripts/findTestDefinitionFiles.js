@@ -34,7 +34,7 @@ async function main() {
         include: outputTestFilesMap,
     };
     console.log(output);
-    return output;
+    // return output;
 }
 
 
