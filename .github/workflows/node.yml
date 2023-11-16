@@ -40,7 +40,7 @@ jobs:
     name: Get Test Definition Files
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.find-definition-files.outputs.result }}
+      matrix: ${{ steps.find-definition-files.outputs.JSON_ARRAY }}
     steps:
       - name: Use Node.js
         uses: actions/setup-node@v1
@@ -61,7 +61,7 @@ jobs:
       - name: Get Test Definition Files
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: echo $(node findTestDefinitionFiles.js) >> $GITHUB_OUTPUT
+        run: echo "JSON_ARRAY=$(node findTestDefinitionFiles.js)" >> $GITHUB_OUTPUT
 
   test-deploy-recipe:
     name: ${{ matrix.testDisplayName }}
