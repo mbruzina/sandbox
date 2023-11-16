@@ -40,7 +40,7 @@ jobs:
     name: Get Test Definition Files
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.get-test-definition-files.outputs.result }}
+      matrix: ${{ steps.find-definition-files.outputs.result }}
     steps:
       - name: Use Node.js
         uses: actions/setup-node@v1
@@ -59,7 +59,7 @@ jobs:
           path: derp
 
       - name: Get Test Definition Files
-        id: get-test-definition-files
+        id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: node findTestDefinitionFiles.js
   test-deploy-recipe:
