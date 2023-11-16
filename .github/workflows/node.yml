@@ -39,13 +39,14 @@ jobs:
       - name: Checkout sandbox repo
         uses: actions/checkout@v2
         with:
-          path: ${{ github.workspace }}/derp
+          path: derp
 
       - name: Get Test Definition Files
         id: get-test-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: |
           echo $(pwd)
+          ls -la ${{ github.workspace }}/oil/test/definitions
           node findTestDefinitionFiles.js
 
       #        with:
