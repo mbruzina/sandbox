@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: newrelic/open-install-library
-          path: open-install-library
+          path: ${{ github.workspace }}/oil
 
       - name: Checkout sandbox repo
         uses: actions/checkout@v2
@@ -45,6 +45,7 @@ jobs:
         id: get-test-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: |
+          ls -la ${{ github.workspace }}
           echo $(pwd)
           node findTestDefinitionFiles.js
 
