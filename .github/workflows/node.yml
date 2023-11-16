@@ -37,19 +37,22 @@ jobs:
         run: echo "$MATRIX_CONTEXT"
 
   clone-repos:
-    - name: Use Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '18.x'
-    - name: Checkout open-install-library Repo
-      uses: actions/checkout@v2
-      with:
-        repository: newrelic/open-install-library
-        path: ${{ github.workspace }}/oil
-    - name: Checkout sandbox repo
-      uses: actions/checkout@v2
-      with:
-        path: derp
+    name: Clone Repos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+      - name: Checkout open-install-library Repo
+        uses: actions/checkout@v2
+        with:
+          repository: newrelic/open-install-library
+          path: ${{ github.workspace }}/oil
+      - name: Checkout sandbox repo
+        uses: actions/checkout@v2
+        with:
+          path: derp
 
   get-test-definition-files:
     name: Get Test Definition Files
@@ -61,7 +64,7 @@ jobs:
       - name: Get Test Definition Files
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run:  echo "files=$(node findTestDefinitionFiles.js)" >> $GITHUB_OUTPUT
+        run: echo "files=$(node findTestDefinitionFiles.js)" >> $GITHUB_OUTPUT
 
   test-deploy-recipe:
     name: ${{ matrix.testDisplayName }}
