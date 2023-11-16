@@ -9,13 +9,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: '18.x'
+
       - name: Install dependencies
-        working-directory: ${{ github.workspace }}.github/scripts
+        working-directory: ${{ github.workspace }}/.github/scripts
         run: npm install
+
       - name: Run application
-        working-directory: ${{ github.workspace }}.github/scripts
+        working-directory: ${{ github.workspace }}/.github/scripts
         run: node main.js
