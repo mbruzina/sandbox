@@ -3,11 +3,9 @@ const { SQSClient, SendMessageCommand } = require('@aws-sdk/client-sqs')
 const { DynamoDBClient, QueryCommand } = require('@aws-sdk/client-dynamodb')
 const { unmarshall } = require('@aws-sdk/util-dynamodb')
 
-
 const AWS_REGION = process.env.AWS_REGION
 const SQS_URL = process.env.SQS_URL
 const DYNAMO_TABLE = process.env.DYNAMO_TABLE
-
 const AWS_CREDS = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
@@ -43,7 +41,7 @@ function queryForDeployment(messageId) {
 
 async function isDeploymentSuccessful(deploymentId, dynamodb, retries, waitSeconds) {
     for (let i = 0; i < retries; i++) {
-        console.log(`Iteration ${i + 1} - sleeping ${waitSeconds} seconds...`)
+        console.log(`Deployment pending, sleeping ${waitSeconds} seconds...`)
         await sleep(waitSeconds * 1000)
 
         try {
@@ -69,11 +67,8 @@ function sleep(ms) {
 }
 
 function main() {
-
     const url = process.env.TEST_DEFINITION_URL
-    // const url = 'https://raw.githubusercontent.com/newrelic/open-install-library/main/test/manual/definitions/infra-agent/ubuntu20-infra.json'
 
-    // Fetch deployment config, will be from //raw.githubusercontent.com/newrelic/open-install-library for OIL tests
     https.get(url, (res) => {
         let body = ''
 
@@ -97,7 +92,7 @@ function main() {
 
             // Execute the query with retries/sleeps
             let RETRIES = 100,
-                WAIT_SECONDS = 20
+                WAIT_SECONDS = 30
             const success = await isDeploymentSuccessful(messageId, dynamodb, RETRIES, WAIT_SECONDS)
             console.log(`Deployment success: ${success}`)
         })
