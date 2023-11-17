@@ -19,8 +19,8 @@ async function getFiles(dir) {
 
 async function main() {
     // const definitionsDir = "${{ github.workspace }}/oil/test/definitions";
-    const definitionsDir = "/home/runner/work/sandbox/sandbox/oil/test/definitions";
-    const abbrevDir = "/test/definitions"
+    const directoryarg = gprocess.argv[2]
+    const definitionsDir = `/home/runner/work/sandbox/sandbox/oil${directoryarg}`;
     const testDefinitions = await getFiles(definitionsDir);
 
     const outputTestFilesMap = testDefinitions
@@ -28,7 +28,7 @@ async function main() {
             return {
                 testDefinitionFile,
                 testDisplayName: testDefinitionFile.replace(`${definitionsDir}/`, ""),
-                testDefinitionSuffix: testDefinitionFile.replace(`${definitionsDir}/`, `${abbrevDir}/`)
+                testDefinitionSuffix: testDefinitionFile.replace(`${definitionsDir}/`, `${directoryarg}/`)
             };
         });
 

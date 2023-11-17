@@ -58,7 +58,7 @@ jobs:
       - name: Get Test Definition Files
         id: find-definition-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: echo "files=$(node findTestDefinitionFiles.js)" >> $GITHUB_OUTPUT
+        run: echo "files=$(node findTestDefinitionFiles.js /test/definitions/infra-agent )" >> $GITHUB_OUTPUT
 
   test-deploy-recipe:
     name: ${{ matrix.testDisplayName }}
