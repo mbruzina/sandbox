@@ -15,7 +15,7 @@ const sqs = new SQSClient({ region: AWS_REGION, credentials: AWS_CREDS })
 const dynamodb = new DynamoDBClient({ region: AWS_REGION, credentials: AWS_CREDS })
 
 
-function queryForDeployment(messageId) {
+function queryForDeploymentStatus(messageId) {
     const query_params = {
         TableName: DYNAMO_TABLE,
         KeyConditionExpression: 'id = :id',
@@ -24,6 +24,7 @@ function queryForDeployment(messageId) {
             '#id': 'id',
             '#completed': 'completed',
             '#status': 'status',
+            '#message': 'message',
         },
         ExpressionAttributeValues: {
             ':id': {
@@ -33,24 +34,24 @@ function queryForDeployment(messageId) {
                 BOOL: true,
             },
         },
-        ProjectionExpression: '#id, #completed, #status',
-        ScanIndexForward: false,
+        ProjectionExpression: '#id, #completed, #status, #message',
+        ScanIndexForward: false,  //returns items by descending timestamp
     }
     return new QueryCommand(query_params)
 }
 
-async function isDeploymentSuccessful(deploymentId, dynamodb, retries, waitSeconds) {
+async function isDeploymentSuccessful(deploymentId, retries, waitSeconds) {
     for (let i = 0; i < retries; i++) {
         console.log(`Deployment pending, sleeping ${waitSeconds} seconds...`)
         await sleep(waitSeconds * 1000)
 
         try {
-            const response = await dynamodb.send(queryForDeployment(deploymentId))
+            const response = await dynamodb.send(queryForDeploymentStatus(deploymentId))
             console.log(`Query succeeded. Items found: ${response.Items.length}`)
 
             for (let i = 0; i < response.Items.length; i++) {
                 const item = unmarshall(response.Items[i])
-                console.log(`Item ${i + 1}: ${item.id} - ${item.completed} - ${item.status}`)
+                console.log(`Item ${i + 1}: ${item.id} - ${item.message} - ${item.status}`)
                 if (item.completed) {
                     if(item.status === 'FAILED') {
                         console.error(`Deployment failed: ${item.message}`)
@@ -96,9 +97,8 @@ function main() {
             }
 
             // Execute the query with retries/sleeps
-            let RETRIES = 100,
-                WAIT_SECONDS = 30
-            const success = await isDeploymentSuccessful(messageId, dynamodb, RETRIES, WAIT_SECONDS)
+            let RETRIES = 100, WAIT_SECONDS = 30
+            const success = await isDeploymentSuccessful(messageId, RETRIES, WAIT_SECONDS)
             console.log(`Deployment success: ${success}`)
         })
 
