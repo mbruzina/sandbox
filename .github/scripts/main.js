@@ -51,10 +51,10 @@ async function isDeploymentSuccessful(deploymentId, retries, waitSeconds) {
 
             for (let i = 0; i < response.Items.length; i++) {
                 const item = unmarshall(response.Items[i])
-                console.log(`Item ${i + 1}: ${item.id} - ${item.message} - ${item.status}`)
+                // console.log(`Item ${i + 1}: ${item.id} - ${item.message} - ${item.status}`)
                 if (item.completed) {
                     if(item.status === 'FAILED') {
-                        console.error(`Deployment failed: ${item.message}`)
+                        console.error(`::error:: Deployment failed: ${item.message}`)
                         return false
                     }
 
