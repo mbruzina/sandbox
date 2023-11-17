@@ -1,7 +1,7 @@
 const https = require('https')
-const { SQSClient, SendMessageCommand } = require('@aws-sdk/client-sqs')
-const { DynamoDBClient, QueryCommand } = require('@aws-sdk/client-dynamodb')
-const { unmarshall } = require('@aws-sdk/util-dynamodb')
+const {SQSClient, SendMessageCommand} = require('@aws-sdk/client-sqs')
+const {DynamoDBClient, QueryCommand} = require('@aws-sdk/client-dynamodb')
+const {unmarshall} = require('@aws-sdk/util-dynamodb')
 
 const AWS_REGION = process.env.AWS_REGION
 const SQS_URL = process.env.SQS_URL
@@ -11,8 +11,8 @@ const AWS_CREDS = {
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 };
 
-const sqs = new SQSClient({ region: AWS_REGION, credentials: AWS_CREDS })
-const dynamodb = new DynamoDBClient({ region: AWS_REGION, credentials: AWS_CREDS })
+const sqs = new SQSClient({region: AWS_REGION, credentials: AWS_CREDS})
+const dynamodb = new DynamoDBClient({region: AWS_REGION, credentials: AWS_CREDS})
 
 
 function queryForDeploymentStatus(messageId) {
@@ -51,9 +51,9 @@ async function isDeploymentSuccessful(deploymentId, retries, waitSeconds) {
 
             for (let i = 0; i < response.Items.length; i++) {
                 const item = unmarshall(response.Items[i])
-                // console.log(`Item ${i + 1}: ${item.id} - ${item.message} - ${item.status}`)
                 if (item.completed) {
-                    if(item.status === 'FAILED') {
+                    console.log(`Completed: ${item.id} - ${item.message} - ${item.status}`)
+                    if (item.status === 'FAILED') {
                         console.error(`::error:: Deployment failed: ${item.message}`)
                         return false
                     }

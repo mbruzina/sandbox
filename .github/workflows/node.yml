@@ -36,7 +36,7 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
 
-  get-test-definition-files:
+  get-infra-agent-files:
     name: Get Test Definition Files
     runs-on: ubuntu-latest
     outputs:
@@ -60,13 +60,13 @@ jobs:
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: echo "files=$(node findTestDefinitionFiles.js /test/definitions/infra-agent )" >> $GITHUB_OUTPUT
 
-  test-deploy-recipe:
+  test-infra-agent-recipes:
     name: ${{ matrix.testDisplayName }}
-    needs: [ get-test-definition-files ]
-    if: ${{ fromJSON(needs.get-test-definition-files.outputs.matrix).include[0] }} # Avoids empty matrix validation error
+    needs: [ get-infra-agent-files ]
+    if: ${{ fromJSON(needs.get-infra-agent-files.outputs.matrix).include[0] }} # Avoids empty matrix validation error
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.get-test-definition-files.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.get-infra-agent-files.outputs.matrix) }}
       fail-fast: false
     env:
       MATRIX: ${{ toJSON(matrix) }}
