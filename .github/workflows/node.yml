@@ -36,11 +36,12 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
 
-  get-infra-agent-files:
-    name: Get Test Definition Files
+  get-test-files:
+    name: Get open-install-library test files
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.find-definition-files.outputs.files }}
+      infra-agent-files: ${{ steps.find-infra-agent-files.outputs.files }}
+      logging-files: ${{ steps.find-logging-files.outputs.files }}
     steps:
       - name: Use Node.js
         uses: actions/setup-node@v1
@@ -55,18 +56,23 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: derp
-      - name: Get Test Definition Files
-        id: find-definition-files
+      - name: Get Infra-Agent Test Files
+        id: find-infra-agent-files
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: echo "files=$(node findTestDefinitionFiles.js /test/definitions/infra-agent )" >> $GITHUB_OUTPUT
+      - name: Get Logging Test Files
+        id: find-logging-files
+        working-directory: ${{ github.workspace }}/derp/.github/scripts
+        run: echo "files=$(node findTestDefinitionFiles.js /test/definitions/logging )" >> $GITHUB_OUTPUT
 
-  test-infra-agent-recipes:
+
+  run-infra-agent-tests:
     name: ${{ matrix.testDisplayName }}
-    needs: [ get-infra-agent-files ]
-    if: ${{ fromJSON(needs.get-infra-agent-files.outputs.matrix).include[0] }} # Avoids empty matrix validation error
+    needs: [ get-test-files ]
+    if: ${{ fromJSON(needs.get-test-files.outputs.infra-agent-files).include[0] }} # Avoids empty matrix validation error
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.get-infra-agent-files.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.get-test-files.outputs.infra-agent-files) }}
       fail-fast: false
     env:
       MATRIX: ${{ toJSON(matrix) }}
@@ -76,16 +82,16 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Checkout sandbox repo
+      - name: checkout sandbox repo
         uses: actions/checkout@v2
         with:
           path: derp
 
-      - name: Install dependencies for test scripts
+      - name: install dependencies
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: npm install
 
-      - name: Run test scripts
+      - name: run test
         working-directory: ${{ github.workspace }}/derp/.github/scripts
         run: node main.js
         env:
