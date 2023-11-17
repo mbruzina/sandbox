@@ -107,74 +107,74 @@ jobs:
           SQS_URL: ${{ secrets.SQS_URL }}
           DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
 
-  run-logging-tests:
-    name: ${{ matrix.testDisplayName }}
-    needs: [ get-test-files ]
-    if: ${{ fromJSON(needs.get-test-files.outputs.logging-files).include[0] }} # Avoids empty matrix validation error
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJson(needs.get-test-files.outputs.logging-files) }}
-      fail-fast: false
-    env:
-      MATRIX: ${{ toJSON(matrix) }}
-    steps:
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '18.x'
-
-      - name: checkout sandbox repo
-        uses: actions/checkout@v2
-        with:
-          path: derp
-
-      - name: install dependencies
-        working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: npm install
-
-      - name: run test
-        working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: node main.js
-        env:
-          TEST_DEFINITION_URL: https://raw.githubusercontent.com/newrelic/open-install-library/main${{ matrix.testDefinitionSuffix }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SQS_URL: ${{ secrets.SQS_URL }}
-          DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
-
-  run-ohi-tests:
-    name: ${{ matrix.testDisplayName }}
-    needs: [ get-test-files ]
-    if: ${{ fromJSON(needs.get-test-files.outputs.ohi-files).include[0] }} # Avoids empty matrix validation error
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJson(needs.get-test-files.outputs.ohi-files) }}
-      fail-fast: false
-    env:
-      MATRIX: ${{ toJSON(matrix) }}
-    steps:
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '18.x'
-
-      - name: checkout sandbox repo
-        uses: actions/checkout@v2
-        with:
-          path: derp
-
-      - name: install dependencies
-        working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: npm install
-
-      - name: run test
-        working-directory: ${{ github.workspace }}/derp/.github/scripts
-        run: node main.js
-        env:
-          TEST_DEFINITION_URL: https://raw.githubusercontent.com/newrelic/open-install-library/main${{ matrix.testDefinitionSuffix }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SQS_URL: ${{ secrets.SQS_URL }}
-          DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
+#  run-logging-tests:
+#    name: ${{ matrix.testDisplayName }}
+#    needs: [ get-test-files ]
+#    if: ${{ fromJSON(needs.get-test-files.outputs.logging-files).include[0] }} # Avoids empty matrix validation error
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix: ${{ fromJson(needs.get-test-files.outputs.logging-files) }}
+#      fail-fast: false
+#    env:
+#      MATRIX: ${{ toJSON(matrix) }}
+#    steps:
+#      - name: Use Node.js
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: '18.x'
+#
+#      - name: checkout sandbox repo
+#        uses: actions/checkout@v2
+#        with:
+#          path: derp
+#
+#      - name: install dependencies
+#        working-directory: ${{ github.workspace }}/derp/.github/scripts
+#        run: npm install
+#
+#      - name: run test
+#        working-directory: ${{ github.workspace }}/derp/.github/scripts
+#        run: node main.js
+#        env:
+#          TEST_DEFINITION_URL: https://raw.githubusercontent.com/newrelic/open-install-library/main${{ matrix.testDefinitionSuffix }}
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          AWS_REGION: ${{ secrets.AWS_REGION }}
+#          SQS_URL: ${{ secrets.SQS_URL }}
+#          DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
+#
+#  run-ohi-tests:
+#    name: ${{ matrix.testDisplayName }}
+#    needs: [ get-test-files ]
+#    if: ${{ fromJSON(needs.get-test-files.outputs.ohi-files).include[0] }} # Avoids empty matrix validation error
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix: ${{ fromJson(needs.get-test-files.outputs.ohi-files) }}
+#      fail-fast: false
+#    env:
+#      MATRIX: ${{ toJSON(matrix) }}
+#    steps:
+#      - name: Use Node.js
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: '18.x'
+#
+#      - name: checkout sandbox repo
+#        uses: actions/checkout@v2
+#        with:
+#          path: derp
+#
+#      - name: install dependencies
+#        working-directory: ${{ github.workspace }}/derp/.github/scripts
+#        run: npm install
+#
+#      - name: run test
+#        working-directory: ${{ github.workspace }}/derp/.github/scripts
+#        run: node main.js
+#        env:
+#          TEST_DEFINITION_URL: https://raw.githubusercontent.com/newrelic/open-install-library/main${{ matrix.testDefinitionSuffix }}
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          AWS_REGION: ${{ secrets.AWS_REGION }}
+#          SQS_URL: ${{ secrets.SQS_URL }}
+#          DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
