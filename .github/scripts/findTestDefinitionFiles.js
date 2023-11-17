@@ -19,7 +19,7 @@ async function getFiles(dir) {
 
 async function main() {
     // const definitionsDir = "${{ github.workspace }}/oil/test/definitions";
-    const directoryarg = gprocess.argv[2]
+    const directoryarg = process.argv[2]
     const definitionsDir = `/home/runner/work/sandbox/sandbox/oil${directoryarg}`;
     const testDefinitions = await getFiles(definitionsDir);
 
