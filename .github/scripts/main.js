@@ -99,7 +99,9 @@ function main() {
             // Execute the query with retries/sleeps
             let RETRIES = 100, WAIT_SECONDS = 30
             const success = await isDeploymentSuccessful(messageId, RETRIES, WAIT_SECONDS)
-            console.log(`Deployment success: ${success}`)
+            if (!success) {
+                process.exit(1)
+            }
         })
 
         res.on('error', (err) => {
