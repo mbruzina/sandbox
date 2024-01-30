@@ -13,6 +13,6 @@
 
 - name: Install dependencies from requirements.txt
   ansible.builtin.pip:
-    requirements: ~/requirements.txt
+    requirements: /home/ec2-user/requirements.txt
     umask: "0022"
   become: true
