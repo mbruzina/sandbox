@@ -45,6 +45,5 @@
   become: true
 
 - name: "Run pip install for requirements"
-  command: "sudo -H pip install -r requirements.txt"
-
+  command: bash -lc "pip install --target={{ python3_path.stdout }} -r requirements.txt"
 
