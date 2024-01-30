@@ -45,5 +45,6 @@
   become: true
 
 - name: "Run pip install for requirements"
-  command: bash -lc "{{ python3_path.stdout }} -m pip install -r requirements.txt"
+  command: bash -lc "{{ python3_path.stdout }} -m -H pip install -r requirements.txt"
+  become: true
 
